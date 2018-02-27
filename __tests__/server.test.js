@@ -41,3 +41,34 @@ describe('testing login route', () => {
     });
   });
 });
+
+describe('testing insertQuestionsToDbAndGet route', () => {
+  beforeAll((done) => {
+    Models.questions.destroy({ truncate: true }).then(() => done());
+  });
+  test('should insert to db by fetching from api1 and api2', (done) => {
+    const options = {
+      method: 'GET',
+      url: '/insertQuestionsToDbAndGet',
+    };
+    server.inject(options, (response) => {
+      expect(response.result.msg).toBe('inserted');
+      expect(response.result.records.length).toBe(12);
+      done();
+    });
+  });
+});
+
+describe('testing getQuestionsFromDb route', () => {
+  test('should fetch from db', (done) => {
+    const options = {
+      method: 'GET',
+      url: '/getQuestionsFromDb',
+    };
+    server.inject(options, (response) => {
+      expect(response.result.msg).toBe('allQuestionsFromDb');
+      expect(response.result.records.length).toBe(12);
+      done();
+    });
+  });
+});
