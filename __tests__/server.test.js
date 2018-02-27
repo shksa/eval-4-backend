@@ -116,4 +116,28 @@ describe('testing saveUserResponses route', () => {
       });
     });
   });
+  test('should not save in db for invalid user', (done) => {
+    const options = {
+      method: 'POST',
+      url: '/saveUserResponse',
+      payload: {
+        userName: 'kiran',
+        questionId: 12,
+        optionNum: 3,
+      },
+    };
+    server.inject(options, (response) => {
+      // console.log(response);
+      expect(response.result).toBe('user not logged in');
+      Models.users.find({
+        where: {
+          userName: 'kiran',
+        },
+      }).then((user) => {
+        console.log(user);
+        expect(user).toBe(null);
+        done();
+      });
+    });
+  });
 });
