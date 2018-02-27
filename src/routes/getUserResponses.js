@@ -14,7 +14,8 @@ module.exports = [
         if (record === null) {
           reply('user does not exist');
         } else {
-          reply({ record, msg: 'userDetailsFromDb' });
+          const { responses } = record.dataValues;
+          reply({ responses, msg: 'user details from Db' });
         }
       });
     },
