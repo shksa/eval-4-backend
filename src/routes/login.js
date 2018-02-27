@@ -1,7 +1,27 @@
 const Models = require('../../models');
 
-function login(payload) {
-  return payload.userName;
+function login(userName) {
+  const response = new Promise((resolve, reject) => {
+    Models.users.find({
+      where: {
+        userName,
+      },
+    }).then((resp) => {
+      if (resp === null) {
+        Models.users.create({
+          userName,
+          score: 0,
+        }).then((userDetails) => {
+          const returnValue = { userDetails, msg: 'new user' };
+          // console.log(returnValue);
+          resolve(returnValue);
+        });
+      } else {
+        resolve(resp);
+      }
+    });
+  });
+  return response;
 }
 
 
@@ -10,8 +30,8 @@ module.exports = [
     method: 'POST',
     path: '/login',
     handler: (request, reply) => {
-      const temp = login(request.payload);
-      reply(temp);
+      const userDetailsPromise = login(request.payload.userName);
+      userDetailsPromise.then(userDetails => reply(userDetails));
     },
   },
 ];
