@@ -12,3 +12,15 @@ describe('ping test for server', () => {
   });
 });
 
+describe('tests for login route', () => {
+  test('testing the payload', () => {
+    const options = {
+      method: 'POST',
+      url: '/login',
+      payload: { userName: 'sreekar' },
+    };
+    server.inject(options, (response) => {
+      expect(response.result).toBe('sreekar');
+    });
+  });
+});
