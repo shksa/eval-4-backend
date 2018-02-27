@@ -72,3 +72,48 @@ describe('testing getQuestionsFromDb route', () => {
     });
   });
 });
+
+describe('testing saveUserResponses route', () => {
+  beforeAll((done) => {
+    Models.users.destroy({ truncate: true }).then(() => {
+      Models.users.bulkCreate([
+        {
+          userName: 'sreekar',
+          score: 0,
+        },
+        {
+          userName: 'vishal',
+          score: 0,
+        },
+        {
+          userName: 'aakash',
+          score: 0,
+        },
+      ]).then(() => done());
+    });
+  });
+  test('should save in db for valid user', (done) => {
+    const options = {
+      method: 'POST',
+      url: '/saveUserResponse',
+      payload: {
+        userName: 'sreekar',
+        questionId: 12,
+        optionNum: 3,
+      },
+    };
+    server.inject(options, (response) => {
+      // console.log(response);
+      expect(response.result.msg).toBe('user response added to db');
+      Models.users.find({
+        where: {
+          userName: 'sreekar',
+        },
+      }).then((user) => {
+        console.log(user.dataValues.responses);
+        expect(user.dataValues.responses).toEqual({ 12: 3 });
+        done();
+      });
+    });
+  });
+});
