@@ -15,7 +15,7 @@ describe('ping test for server', () => {
 });
 
 describe('testing login route', () => {
-  beforeEach((done) => {
+  beforeAll((done) => {
     Models.users.destroy({ truncate: true }).then(() => done());
   });
   test('new user should login', (done) => {
@@ -26,6 +26,17 @@ describe('testing login route', () => {
     };
     server.inject(options, (response) => {
       expect(response.result.msg).toBe('new user');
+      done();
+    });
+  });
+  test('old user should logged in', (done) => {
+    const options = {
+      method: 'POST',
+      url: '/login',
+      payload: { userName: 'sreekar' },
+    };
+    server.inject(options, (response) => {
+      expect(response.result.msg).toBe('old user');
       done();
     });
   });

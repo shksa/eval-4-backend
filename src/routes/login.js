@@ -17,7 +17,8 @@ function login(userName) {
           resolve(returnValue);
         });
       } else {
-        resolve(resp);
+        const returnValue = { resp, msg: 'old user' };
+        resolve(returnValue);
       }
     });
   });
