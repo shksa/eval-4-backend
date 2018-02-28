@@ -7,6 +7,7 @@ const getQuestionsFromDb = require('./getQuestionsFromDb');
 const saveUserResponse = require('./saveUserResponse');
 const showUsers = require('./showUsers');
 const calculateUserScoreAndGet = require('./calculateUserScoreAndGet');
+const getTop5users = require('./getTop5Users');
 
 module.exports = [].concat(
   ping,
@@ -18,4 +19,5 @@ module.exports = [].concat(
   saveUserResponse,
   showUsers,
   calculateUserScoreAndGet,
+  getTop5users,
 );

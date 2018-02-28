@@ -51,6 +51,25 @@ function calculateScore(userName) {
   return scorePromise;
 }
 
+function saveScoreInDb(score, userName) {
+  const newData = {
+    score,
+  };
+  const updatedPromise = new Promise((resolve, reject) => {
+    Models.users.update(newData, {
+      where: {
+        userName,
+      },
+    }).then((resp) => {
+      console.log(resp);
+      resolve({ resp, msg: 'user score updated' });
+    });
+  });
+
+  return updatedPromise;
+}
+
+
 module.exports = [
   {
     method: 'GET',
@@ -58,7 +77,10 @@ module.exports = [
     handler: (request, reply) => {
       const { userName } = request.params;
       const scorePromise = calculateScore(userName);
-      scorePromise.then(score => reply(score));
+      scorePromise.then((score) => {
+        const scoreUpdatedPromise = saveScoreInDb(score, userName);
+        scoreUpdatedPromise.then(resp => reply(resp));
+      });
     },
   },
 ];
