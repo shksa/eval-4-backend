@@ -3,7 +3,7 @@ const Routes = require('./routes');
 
 const server = new Hapi.Server();
 server.connection({
-  port: 3001,
+  port: 8001,
   host: 'localhost',
 });
 
