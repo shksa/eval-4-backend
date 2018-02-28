@@ -48,7 +48,7 @@ module.exports = [
     method: 'POST',
     path: '/saveUserResponse',
     handler: (request, reply) => {
-      const newResponseFromUser = request.payload;
+      const newResponseFromUser = JSON.parse(request.payload);
       const { userName } = newResponseFromUser;
       Models.users.find({
         where: {
@@ -60,7 +60,10 @@ module.exports = [
         } else {
           const previousResponses = record.dataValues.responses;
           const updatedPromise = saveUserResponse(newResponseFromUser, previousResponses);
-          updatedPromise.then(resp => reply(resp));
+          updatedPromise.then((resp) => {
+            console.log(resp);
+            reply(resp);
+          });
         }
       });
     },

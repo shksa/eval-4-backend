@@ -61,8 +61,8 @@ function saveScoreInDb(score, userName) {
         userName,
       },
     }).then((resp) => {
-      console.log(resp);
-      resolve({ resp, msg: 'user score updated' });
+      console.log(score);
+      resolve({ score, msg: 'user score updated' });
     });
   });
 

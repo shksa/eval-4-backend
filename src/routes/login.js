@@ -6,8 +6,8 @@ function login(userName) {
       where: {
         userName,
       },
-    }).then((resp) => {
-      if (resp === null) {
+    }).then((userDetails) => {
+      if (userDetails === null) {
         Models.users.create({
           userName,
           score: 0,
@@ -17,7 +17,7 @@ function login(userName) {
           resolve(returnValue);
         });
       } else {
-        const returnValue = { resp, msg: 'old user' };
+        const returnValue = { userDetails, msg: 'old user' };
         resolve(returnValue);
       }
     });
@@ -31,7 +31,8 @@ module.exports = [
     method: 'POST',
     path: '/login',
     handler: (request, reply) => {
-      const userDetailsPromise = login(request.payload.userName);
+      const JSONpayload = JSON.parse(request.payload);
+      const userDetailsPromise = login(JSONpayload.userName);
       userDetailsPromise.then(userDetails => reply(userDetails));
     },
   },
